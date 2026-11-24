@@ -1,0 +1,54 @@
+{
+  "StartMenu": "Main",
+  "Menus": {
+    "Main": {
+      "Title": "PIXEL FOOTBALL",
+      "Items": [
+        { "Type": "Button", "Text": "Start", "Function": "StartGame" },
+        { "Type": "Button", "Text": "Options", "Function": "OpenMenu", "Target": "Options" },
+        { "Type": "Button", "Text": "Controls", "Function": "OpenMenu", "Target": "Controls" },
+        { "Type": "Button", "Text": "Exit", "Function": "ExitGame" }
+      ]
+    },
+    "Options": {
+      "Title": "OPTIONS",
+      "Items": [
+        { "Type": "Selector", "Text": "Window Resolution", "Function": "SetWindowResolution", "Options": ["640x360", "960x540", "1280x720", "1600x900", "1920x1080", "2560x1440"], "Value": "1280x720" },
+        { "Type": "Selector", "Text": "Render Resolution", "Function": "SetRenderResolution", "Options": ["320x180", "640x360", "1280x720"], "Value": "1280x720" },
+        { "Type": "Toggle", "Text": "Fullscreen", "Function": "SetFullscreen", "Value": false },
+        { "Type": "Toggle", "Text": "VSync", "Function": "SetVSync", "Value": true },
+        { "Type": "Toggle", "Text": "Debug Overlay", "Function": "SetDebug", "Value": false },
+        { "Type": "Label", "Text": "1280x720 render shows the sharpest sprite detail." },
+        { "Type": "Label", "Text": "Display settings and debug choice are saved automatically." },
+        { "Type": "Button", "Text": "Back", "Function": "Back" }
+      ]
+    },
+    "Controls": {
+      "Title": "CONTROLS",
+      "Items": [
+        { "Type": "KeyBind", "Text": "Move Up", "Function": "Rebind", "Action": "MoveUp" },
+        { "Type": "KeyBind", "Text": "Move Down", "Function": "Rebind", "Action": "MoveDown" },
+        { "Type": "KeyBind", "Text": "Move Left", "Function": "Rebind", "Action": "MoveLeft" },
+        { "Type": "KeyBind", "Text": "Move Right", "Function": "Rebind", "Action": "MoveRight" },
+        { "Type": "KeyBind", "Text": "Throw", "Function": "Rebind", "Action": "Throw" },
+        { "Type": "KeyBind", "Text": "Catch Stationary", "Function": "Rebind", "Action": "CatchStationary" },
+        { "Type": "KeyBind", "Text": "Catch & Run", "Function": "Rebind", "Action": "CatchRac" },
+        { "Type": "KeyBind", "Text": "Catch High", "Function": "Rebind", "Action": "CatchHigh" },
+        { "Type": "KeyBind", "Text": "Catch Dive", "Function": "Rebind", "Action": "CatchDive" },
+        { "Type": "KeyBind", "Text": "Pause", "Function": "Rebind", "Action": "Pause" },
+        { "Type": "Label", "Text": "F3 toggles debug. Rebinding lasts for this session." },
+        { "Type": "Button", "Text": "Back", "Function": "Back" }
+      ]
+    },
+    "Pause": {
+      "Title": "PAUSED",
+      "Items": [
+        { "Type": "Button", "Text": "Resume", "Function": "Resume" },
+        { "Type": "Button", "Text": "Options", "Function": "OpenMenu", "Target": "Options" },
+        { "Type": "Button", "Text": "Controls", "Function": "OpenMenu", "Target": "Controls" },
+        { "Type": "Button", "Text": "Main Menu", "Function": "MainMenu" },
+        { "Type": "Button", "Text": "Exit", "Function": "ExitGame" }
+      ]
+    }
+  }
+}

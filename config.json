@@ -1,0 +1,12 @@
+{
+  "WindowWidth": 1280,
+  "WindowHeight": 720,
+  "WindowTitle": "Pixel Football",
+  "TargetFps": 60,
+  "VSync": true,
+  "Fullscreen": false,
+  "LogicalWidth": 1280,
+  "LogicalHeight": 720,
+  "DrawGameplayDebug": false,
+  "ScrollEdgeBuffer": 40
+}
