@@ -5,19 +5,23 @@ internal sealed class FieldScroller
 {
     private readonly float _viewHeight;
     private readonly float _edgeBuffer;
+    private readonly float _playerHeight;
     private float _fieldTop;
     private float _fieldBottom;
 
     public float Top { get; private set; }
 
-    public FieldScroller(float viewHeight, float edgeBuffer)
+    public FieldScroller(float viewHeight, float edgeBuffer, float playerHeight)
     {
         if (!float.IsFinite(viewHeight) || viewHeight <= 0)
             throw new ArgumentOutOfRangeException(nameof(viewHeight));
         if (!float.IsFinite(edgeBuffer) || edgeBuffer < 0 || edgeBuffer >= viewHeight / 2f)
             throw new ArgumentOutOfRangeException(nameof(edgeBuffer));
+        if (!float.IsFinite(playerHeight) || playerHeight <= 0 || playerHeight >= viewHeight - 2f * edgeBuffer)
+            throw new ArgumentOutOfRangeException(nameof(playerHeight));
         _viewHeight = viewHeight;
         _edgeBuffer = edgeBuffer;
+        _playerHeight = playerHeight;
         _fieldTop = 0;
         _fieldBottom = viewHeight;
     }
@@ -37,8 +41,8 @@ internal sealed class FieldScroller
     {
         if (!float.IsFinite(playerY)) throw new ArgumentOutOfRangeException(nameof(playerY));
         float screenY = playerY - Top;
-        if (screenY < _edgeBuffer)
-            Top = playerY - _edgeBuffer;
+        if (screenY - _playerHeight < _edgeBuffer)
+            Top = playerY - _playerHeight - _edgeBuffer;
         else if (screenY > _viewHeight - _edgeBuffer)
             Top = playerY - (_viewHeight - _edgeBuffer);
         Top = Math.Clamp(Top, _fieldTop, _fieldBottom - _viewHeight);

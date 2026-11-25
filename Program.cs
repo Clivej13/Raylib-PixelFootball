@@ -4,6 +4,7 @@ using RaylibGameFramework.Input;
 using RaylibGameFramework.Logging;
 using RaylibGameFramework.Menus;
 using RaylibPixelFootball.Application;
+using RaylibPixelFootball.Game;
 
 var log = GameDiagnostics.Create();
 using var crashLogging = new CrashLogging(log);
@@ -18,12 +19,15 @@ try
         throw new InvalidDataException("Unsupported logical resolution in config.json.");
     if (!DisplayResolutions.IsWindowOption(window.WindowWidth, window.WindowHeight))
         throw new InvalidDataException("Unsupported window resolution in config.json.");
+    if (!TeamKits.IsOption(game.HomeKitColor) || !TeamKits.IsOption(game.AwayKitColor))
+        throw new InvalidDataException("Invalid team kit color in config.json.");
     var settings = new GameSettings(window, game, log);
     var input = InputConfigLoader.Load(Path.Combine(AppContext.BaseDirectory, "input.json"));
     var menus = MenuConfigLoader.Load(Path.Combine(AppContext.BaseDirectory, "menu.json"));
+    _ = ActionProfiles.Weights;
     if (args.Contains("--check-config", StringComparer.OrdinalIgnoreCase))
     {
-        Console.WriteLine("Configuration, input, and menus loaded successfully.");
+        Console.WriteLine("Configuration, input, menus, and action weights loaded successfully.");
         return;
     }
     new GameApplication(window, game, input, menus, settings, log).Run();

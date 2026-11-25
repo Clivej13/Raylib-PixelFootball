@@ -10,6 +10,17 @@ namespace RaylibPixelFootball.Tests;
 public sealed class StartupConfigTests
 {
     [Fact]
+    public void BlockLossHasKeyboardAndControllerBindings()
+    {
+        var input = InputConfigLoader.Load(Path.Combine(AppContext.BaseDirectory, "input.json"));
+        var bindings = input.Bindings.Where(binding => binding.Action == "BlockLoss").ToArray();
+        Assert.Contains(bindings, binding =>
+            binding.Device.ToString() == "Keyboard" && binding.Input.ToString() == "L");
+        Assert.Contains(bindings, binding =>
+            binding.Device.ToString() == "GamepadButton" && binding.Input.ToString() == "MiddleLeft");
+    }
+
+    [Fact]
     public void StartupFilesLoadAndMenusReferenceAvailableActions()
     {
         string path = AppContext.BaseDirectory;

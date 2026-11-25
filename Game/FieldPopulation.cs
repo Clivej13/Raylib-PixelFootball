@@ -2,7 +2,8 @@ using System.Numerics;
 
 namespace RaylibPixelFootball.Game;
 
-internal readonly record struct PlayerSpawn(Vector2 Position, int DirectionIndex, float AnimationPhase);
+internal readonly record struct PlayerSpawn(
+    Vector2 Position, int DirectionIndex, float AnimationPhase, TeamId Team);
 
 internal static class FieldPopulation
 {
@@ -15,11 +16,12 @@ internal static class FieldPopulation
         for (int i = 0; i < FieldCount; i++)
         {
             int column = i % 11;
-            bool offense = i < 11;
+            bool home = i < 11;
             spawns[i] = new PlayerSpawn(
-                new Vector2(65 + column * 19, offense ? 105 : 75),
-                offense ? 0 : 4,
-                (i % 8) * 0.1f);
+                new Vector2(65 + column * 19, home ? 105 : 75),
+                home ? 0 : 4,
+                (i % 8) * 0.1f,
+                home ? TeamId.Home : TeamId.Away);
         }
         return spawns;
     }
@@ -38,7 +40,8 @@ internal static class FieldPopulation
             spawns[i] = new PlayerSpawn(
                 new Vector2(x, y),
                 left ? 2 : 6,
-                (i % 8) * 0.1f);
+                (i % 8) * 0.1f,
+                left ? TeamId.Home : TeamId.Away);
         }
         return spawns;
     }

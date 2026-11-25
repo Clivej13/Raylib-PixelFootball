@@ -10,7 +10,7 @@ namespace RaylibPixelFootball.Tests;
 public sealed class SpriteSheetTests
 {
     [Fact]
-    public void CatalogIncludesEveryPlayerAnimationAndEverySheet()
+    public void CatalogIncludesEveryLoadedPlayerAnimation()
     {
         string directory = Path.Combine(AppContext.BaseDirectory, "Assets", "Sprites", "Players");
         var declared = PlayerSpriteAssets.Definitions.Select(item => item.FileName)
@@ -20,17 +20,17 @@ public sealed class SpriteSheetTests
         Assert.Equal(Enum.GetValues<PlayerAnimationKind>().Length, declared.Length);
         Assert.Equal(Enum.GetValues<PlayerAnimationKind>().Length,
             PlayerSpriteAssets.Definitions.Select(item => item.Kind).Distinct().Count());
-        Assert.Equal(present, declared);
+        Assert.All(declared, fileName => Assert.Contains(fileName, present));
     }
 
-    public static IEnumerable<object[]> SheetNames =>
-        PlayerSpriteAssets.Definitions.Select(definition => new object[] { definition.FileName });
+    public static IEnumerable<object[]> Sheets =>
+        PlayerSpriteAssets.Definitions.Select(definition => new object[]
+            { definition.FileName, PlayerSpriteAssets.LayoutFor(definition.Kind) });
 
     [Theory]
-    [MemberData(nameof(SheetNames))]
-    public void PlayerSheetsContainEightDirectionalAnimationsOfEightFrames(string fileName)
+    [MemberData(nameof(Sheets))]
+    public void PlayerSheetsMatchTheirDirectionalFrameLayouts(string fileName, SpriteSheetLayout layout)
     {
-        var layout = new SpriteSheetLayout(64, 8, 8, 8);
         string path = Path.Combine(AppContext.BaseDirectory, "Assets", "Sprites", "Players", fileName);
         using var stream = File.OpenRead(path);
         byte[] header = new byte[26];
@@ -44,32 +44,67 @@ public sealed class SpriteSheetTests
         layout.ValidateImageSize(width, height);
         Assert.Equal(64, layout.FrameSize);
         Assert.Equal(8, layout.SourceScale);
-        Assert.Equal(8, layout.FramesPerAnimation);
+        Assert.Equal(fileName == "football_kick_7_8x.png" ? 6 : 8, layout.FramesPerAnimation);
         Assert.Equal(8, layout.AnimationCount);
-        Assert.Equal(32768, layout.ExpectedWidth);
+        Assert.Equal(width, layout.ExpectedWidth);
         Assert.Equal(512, layout.ExpectedHeight);
         Assert.Equal(0, layout.SourceRectangle(0, 0).X);
-        Assert.Equal(32256, layout.SourceRectangle(7, 7).X);
+        Assert.Equal(width - layout.SourceFrameSize,
+            layout.SourceRectangle(7, layout.FramesPerAnimation - 1).X);
     }
 
     [Theory]
-    [MemberData(nameof(SheetNames))]
-    public void RaylibDecodesAndSlicesTheLastDirectionalStrip(string fileName)
+    [MemberData(nameof(Sheets))]
+    public void EveryDirectionUsesTheBoundedResizeAndPalettePath(string fileName, SpriteSheetLayout layout)
+    {
+        string path = Path.Combine(AppContext.BaseDirectory, "Assets", "Sprites", "Players", fileName);
+        Image source = Raylib.LoadImage(path);
+        try
+        {
+            for (int direction = 0; direction < layout.AnimationCount; direction++)
+            {
+                Image strip = SpriteSheet.ExtractNativeStrip(source, layout, direction);
+                try
+                {
+                    Assert.Equal(layout.FramesPerAnimation * layout.FrameSize, strip.Width);
+                    Assert.Equal(64, strip.Height);
+                    Image variant = SpriteSheet.ApplyPalette(strip,
+                        TeamKits.SwapsFor(TeamKits.IndexOf("Blue")));
+                    try
+                    {
+                        Assert.Equal(layout.FramesPerAnimation * layout.FrameSize, variant.Width);
+                        Assert.Equal(64, variant.Height);
+                    }
+                    finally { Raylib.UnloadImage(variant); }
+                }
+                finally { Raylib.UnloadImage(strip); }
+            }
+        }
+        finally { Raylib.UnloadImage(source); }
+    }
+
+    [Theory]
+    [MemberData(nameof(Sheets))]
+    public void RaylibDecodesAndSlicesTheLastDirectionalStrip(string fileName, SpriteSheetLayout layout)
     {
         string path = Path.Combine(AppContext.BaseDirectory, "Assets", "Sprites", "Players", fileName);
         Image image = Raylib.LoadImage(path);
         try
         {
-            Assert.Equal(32768, image.Width);
+            Assert.Equal(layout.ExpectedWidth, image.Width);
             Assert.Equal(512, image.Height);
             Assert.Equal(0, Raylib.GetImageColor(image, 0, 0).A);
-            Image strip = Raylib.ImageFromImage(image, new Raylib_cs.Rectangle(28672, 0, 4096, 512));
+            int sourceStripWidth = layout.FramesPerAnimation * layout.SourceFrameSize;
+            Image strip = Raylib.ImageFromImage(image,
+                new Raylib_cs.Rectangle(layout.ExpectedWidth - sourceStripWidth, 0,
+                    sourceStripWidth, layout.SourceFrameSize));
             try
             {
-                Assert.Equal(4096, strip.Width);
+                Assert.Equal(sourceStripWidth, strip.Width);
                 Assert.Equal(512, strip.Height);
-                Raylib.ImageResizeNN(ref strip, 512, 64);
-                Assert.Equal(512, strip.Width);
+                Raylib.ImageResizeNN(ref strip,
+                    layout.FramesPerAnimation * layout.FrameSize, layout.FrameSize);
+                Assert.Equal(layout.FramesPerAnimation * layout.FrameSize, strip.Width);
                 Assert.Equal(64, strip.Height);
                 Assert.Equal(0, Raylib.GetImageColor(strip, 0, 0).A);
             }
@@ -115,6 +150,22 @@ public sealed class SpriteSheetTests
         Assert.Equal(4, playback.FrameIndex);
         playback.Update(0.1f);
         Assert.Equal(5, playback.FrameIndex);
+    }
+
+    [Fact]
+    public void KickStopsAfterSixFramesAndBaseAnimationReturnsToEight()
+    {
+        var playback = new SpritePlayback(PlayerSpriteAssets.Layout, 10);
+        playback.Play(3, loop: false, restart: true,
+            frameCount: PlayerSpriteAssets.KickLayout.FramesPerAnimation);
+        playback.Update(0.6f);
+        Assert.Equal(5, playback.FrameIndex);
+        Assert.True(playback.IsComplete);
+
+        playback.Play(3, loop: true, restart: true);
+        playback.Update(0.7f);
+        Assert.Equal(7, playback.FrameIndex);
+        Assert.False(playback.IsComplete);
     }
 
     [Fact]

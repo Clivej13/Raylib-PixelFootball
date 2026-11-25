@@ -7,6 +7,7 @@ public sealed class SpritePlayback
     private readonly float _framesPerSecond;
     private float _fractionalFrames;
     private bool _loop;
+    private int _frameCount;
 
     public int AnimationIndex { get; private set; }
     public int FrameIndex { get; private set; }
@@ -18,12 +19,17 @@ public sealed class SpritePlayback
         if (!float.IsFinite(framesPerSecond) || framesPerSecond <= 0)
             throw new ArgumentOutOfRangeException(nameof(framesPerSecond));
         _framesPerSecond = framesPerSecond;
+        _frameCount = layout.FramesPerAnimation;
     }
 
-    public void Play(int animationIndex, bool loop, bool restart = false, bool preservePhase = false)
+    public void Play(int animationIndex, bool loop, bool restart = false, bool preservePhase = false,
+        int? frameCount = null)
     {
         _layout.SourceRectangle(animationIndex, 0);
-        if (!restart && _loop == loop && !IsComplete)
+        int nextFrameCount = frameCount ?? _layout.FramesPerAnimation;
+        if (nextFrameCount <= 0 || nextFrameCount > _layout.FramesPerAnimation)
+            throw new ArgumentOutOfRangeException(nameof(frameCount));
+        if (!restart && _loop == loop && _frameCount == nextFrameCount && !IsComplete)
         {
             if (AnimationIndex == animationIndex) return;
             if (preservePhase)
@@ -33,6 +39,7 @@ public sealed class SpritePlayback
             }
         }
         AnimationIndex = animationIndex;
+        _frameCount = nextFrameCount;
         FrameIndex = 0;
         _fractionalFrames = 0;
         IsComplete = false;
@@ -51,14 +58,14 @@ public sealed class SpritePlayback
             throw new ArgumentOutOfRangeException(nameof(deltaTime));
         if (IsComplete) return;
         _fractionalFrames += deltaTime * _framesPerSecond;
-        int frames = (int)_fractionalFrames;
-        _fractionalFrames -= frames;
+        int frames = (int)(_fractionalFrames + 0.00001f);
+        _fractionalFrames = Math.Max(0f, _fractionalFrames - frames);
         if (frames == 0) return;
         if (_loop)
-            FrameIndex = (FrameIndex + frames) % _layout.FramesPerAnimation;
-        else if (FrameIndex + frames >= _layout.FramesPerAnimation)
+            FrameIndex = (FrameIndex + frames) % _frameCount;
+        else if (FrameIndex + frames >= _frameCount)
         {
-            FrameIndex = _layout.FramesPerAnimation - 1;
+            FrameIndex = _frameCount - 1;
             IsComplete = true;
         }
         else

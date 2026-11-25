@@ -8,5 +8,7 @@
   "LogicalWidth": 1280,
   "LogicalHeight": 720,
   "DrawGameplayDebug": false,
-  "ScrollEdgeBuffer": 40
+  "ScrollEdgeBuffer": 40,
+  "HomeKitColor": "Blue",
+  "AwayKitColor": "Red"
 }
