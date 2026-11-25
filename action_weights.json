@@ -1,0 +1,192 @@
+{
+  "Blocking": {
+    "BaseDifficulty": 5,
+    "DiceMin": 1,
+    "DiceMax": 10,
+    "PrimaryWeight": 1.0,
+    "OpposingWeight": 1.0,
+    "ResolutionInterval": 0.5,
+    "MaximumDuration": 1.25,
+    "Thresholds": {
+      "CriticalFailureMax": -7,
+      "MajorFailureMax": -5,
+      "MinorFailureMax": -3,
+      "NeutralMax": 3,
+      "MinorSuccessMax": 5,
+      "MajorSuccessMax": 7
+    },
+    "Consequences": {
+      "CriticalFailure": { "RecoverySeconds": 0.85 },
+      "MajorFailure": { "DisplacementYards": -0.5 },
+      "MinorFailure": { "DisplacementYards": -0.25 },
+      "Neutral": {},
+      "MinorSuccess": { "DisplacementYards": 0.25 },
+      "MajorSuccess": { "DisplacementYards": 0.5 },
+      "CriticalSuccess": { "RecoverySeconds": 1.2 }
+    }
+  },
+  "Catching": {
+    "BaseDifficulty": 4,
+    "DiceMin": 1,
+    "DiceMax": 6,
+    "PrimaryWeight": 1.0,
+    "OpposingWeight": 1.0,
+    "ResolutionInterval": 0.0,
+    "MaximumDuration": 0.0,
+    "Thresholds": {
+      "CriticalFailureMax": -6,
+      "MajorFailureMax": -4,
+      "MinorFailureMax": -2,
+      "NeutralMax": 1,
+      "MinorSuccessMax": 3,
+      "MajorSuccessMax": 5
+    },
+    "Consequences": {
+      "CriticalFailure": { "RecoverySeconds": 0.35, "MomentumRetention": 0.0 },
+      "MajorFailure": { "RecoverySeconds": 0.35, "MomentumRetention": 0.0 },
+      "MinorFailure": { "RecoverySeconds": 0.8, "MomentumRetention": 0.3 },
+      "Neutral": { "RecoverySeconds": 0.6, "MomentumRetention": 0.4 },
+      "MinorSuccess": { "RecoverySeconds": 0.3, "MomentumRetention": 0.65 },
+      "MajorSuccess": { "RecoverySeconds": 0.15, "MomentumRetention": 0.85 },
+      "CriticalSuccess": { "RecoverySeconds": 0.0, "MomentumRetention": 1.0 }
+    }
+  },
+  "Tackling": {
+    "BaseDifficulty": 5,
+    "DiceMin": 1,
+    "DiceMax": 8,
+    "PrimaryWeight": 1.0,
+    "OpposingWeight": 1.0,
+    "ResolutionInterval": 0.5,
+    "MaximumDuration": 1.5,
+    "Thresholds": {
+      "CriticalFailureMax": -7,
+      "MajorFailureMax": -5,
+      "MinorFailureMax": -3,
+      "NeutralMax": 0,
+      "MinorSuccessMax": 2,
+      "MajorSuccessMax": 4
+    },
+    "Consequences": {
+      "CriticalFailure": { "RecoverySeconds": 0.7 },
+      "MajorFailure": { "RecoverySeconds": 0.5 },
+      "MinorFailure": { "RecoverySeconds": 0.2, "MomentumRetention": 0.9 },
+      "Neutral": { "RecoverySeconds": 0.45, "MomentumRetention": 0.35 },
+      "MinorSuccess": { "RecoverySeconds": 0.3, "MomentumRetention": 0.5 },
+      "MajorSuccess": { "RecoverySeconds": 0.4 },
+      "CriticalSuccess": { "RecoverySeconds": 0.6 }
+    }
+  },
+  "BallSecurity": {
+    "BaseDifficulty": 5,
+    "DiceMin": 1,
+    "DiceMax": 8,
+    "PrimaryWeight": 1.0,
+    "OpposingWeight": 1.0,
+    "ResolutionInterval": 0.0,
+    "MaximumDuration": 0.0,
+    "Thresholds": {
+      "CriticalFailureMax": -8,
+      "MajorFailureMax": -6,
+      "MinorFailureMax": -3,
+      "NeutralMax": 1,
+      "MinorSuccessMax": 3,
+      "MajorSuccessMax": 6
+    },
+    "Consequences": {
+      "CriticalFailure": {},
+      "MajorFailure": {},
+      "MinorFailure": {},
+      "Neutral": {},
+      "MinorSuccess": {},
+      "MajorSuccess": {},
+      "CriticalSuccess": {}
+    }
+  },
+  "Situational": {
+    "LaneLeverage": -1,
+    "UnsecuredBall": 1,
+    "WrapControl": 1,
+    "DominantTackle": -2,
+    "CatchBallVelocity": -1,
+    "CatchDefensiveCoverage": -1,
+    "CatchDefensiveContact": -1,
+    "CatchReceiverMovement": -1,
+    "CatchBodyPosition": 1,
+    "CatchRadius": -1,
+    "CatchCoverageRadius": 12.0,
+    "CatchContactRadius": 6.0,
+    "CatchMovementThresholdSquared": 0.25,
+    "CatchRadiusPenaltyDistanceSquared": 25.0
+  },
+  "BlockMotion": {
+    "ContactMargin": 0.5,
+    "ReleaseRadius": 12.0,
+    "TackleMargin": 3.0,
+    "LaneLeverageDistance": 4.0,
+    "CarrierReleaseDistance": 18.0,
+    "HoldSkillSeconds": 0.1,
+    "MinimumHoldSeconds": 0.5,
+    "MaximumHoldSeconds": 2.25,
+    "StrengthDisplacementPerPoint": 0.08,
+    "MinimumStrengthFactor": 0.5,
+    "MaximumStrengthFactor": 1.5,
+    "OutcomeHoldAdjustmentSeconds": 0.08
+  },
+  "TackleEffects": {
+    "MissedTackleDownSeconds": 0.4,
+    "GlanceRecoverySeconds": 0.2,
+    "GlanceMomentumRetention": 0.9,
+    "WrapRecoverySeconds": 0.5,
+    "WrapMomentumRetention": 0.35,
+    "EscapeRecoverySeconds": 0.15,
+    "EscapeMomentumRetention": 0.9,
+    "CompletedTackleDownSeconds": 1.1,
+    "DominantTackleDownSeconds": 1.2
+  },
+  "Recovery": {
+    "Tackled": { "MinimumDownSeconds": 1.1, "GetUpPlaybackRate": 0.75 },
+    "MadeTackle": { "MinimumDownSeconds": 0.2, "GetUpPlaybackRate": 1.5 },
+    "MissedTackle": { "MinimumDownSeconds": 0.2, "GetUpPlaybackRate": 1.5 },
+    "LostBlock": { "MinimumDownSeconds": 0.85, "GetUpPlaybackRate": 0.9 },
+    "LostPassRush": { "MinimumDownSeconds": 0.85, "GetUpPlaybackRate": 0.9 }
+  },
+  "BallBehavior": {
+    "MaximumCatchAttempts": 3,
+    "Gravity": 38.0,
+    "DeflectedVelocityX": 4.0,
+    "DeflectedVelocityY": -24.0,
+    "DroppedVelocityY": 9.0,
+    "CatchRetryCooldownSeconds": 0.2,
+    "BobbleWindowSeconds": 0.5,
+    "CarriedOffsetX": 2.0,
+    "CarriedOffsetY": -3.0
+  },
+  "EngagementTiming": {
+    "WinnerRecoverySeconds": 0.2,
+    "LoserMinimumRecoverySeconds": 0.85,
+    "WinnerReengageSeconds": 0.35,
+    "LoserReengageDelaySeconds": 0.15,
+    "ReleasedReengageSeconds": 0.3,
+    "TackleRetrySeconds": 0.5
+  },
+  "Kickoff": {
+    "WindupSeconds": 0.36,
+    "FlightSeconds": 2.2,
+    "CatchRadius": 8.0,
+    "ArcHeight": 24.0,
+    "SpiralFrameSeconds": 0.06,
+    "LooseBallTimeoutSeconds": 8.0,
+    "BounceFrameSeconds": [0.05, 0.05, 0.06, 0.06, 0.07, 0.08, 0.10, 0.13]
+  },
+  "PlayerRatings": {
+    "DefaultRating": 5,
+    "CoverageBlockShedding": { "Base": 4, "Step": 1, "Modulo": 5 },
+    "CoverageStrength": { "Base": 4, "Step": 2, "Modulo": 5 },
+    "CoverageStripBall": { "Base": 3, "Step": 1, "Modulo": 4 },
+    "ReturnBlocking": { "Base": 4, "Step": 1, "Modulo": 5 },
+    "ReturnStrength": { "Base": 4, "Step": 3, "Modulo": 5 },
+    "ReturnCatching": { "Base": 7, "Step": 1, "Modulo": 3 },
+    "ReturnBallSecurity": { "Base": 6, "Step": 1, "Modulo": 4 }
+  }
+}

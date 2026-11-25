@@ -1,6 +1,7 @@
 using System.Text.Json;
 using RaylibGameFramework.Configuration;
 using RaylibGameFramework.Logging;
+using RaylibPixelFootball.Game;
 
 namespace RaylibPixelFootball.Application;
 
@@ -10,6 +11,8 @@ public sealed class PixelGameConfig
     public int LogicalHeight { get; set; } = 720;
     public bool DrawGameplayDebug { get; set; }
     public float ScrollEdgeBuffer { get; set; } = 40f;
+    public string HomeKitColor { get; set; } = "Blue";
+    public string AwayKitColor { get; set; } = "Red";
 }
 
 public sealed class LocalSettings
@@ -21,6 +24,8 @@ public sealed class LocalSettings
     public int? WindowHeight { get; set; }
     public int? LogicalWidth { get; set; }
     public int? LogicalHeight { get; set; }
+    public string? HomeKitColor { get; set; }
+    public string? AwayKitColor { get; set; }
 }
 
 public sealed class GameSettings
@@ -42,6 +47,8 @@ public sealed class GameSettings
                 window.Fullscreen = saved.Fullscreen;
                 window.VSync = saved.VSync;
                 game.DrawGameplayDebug = saved.DrawGameplayDebug;
+                if (TeamKits.IsOption(saved.HomeKitColor)) game.HomeKitColor = saved.HomeKitColor!;
+                if (TeamKits.IsOption(saved.AwayKitColor)) game.AwayKitColor = saved.AwayKitColor!;
                 if (saved.WindowWidth is int windowWidth && saved.WindowHeight is int windowHeight
                     && DisplayResolutions.IsWindowOption(windowWidth, windowHeight))
                 {
@@ -74,7 +81,9 @@ public sealed class GameSettings
                 WindowWidth = window.WindowWidth,
                 WindowHeight = window.WindowHeight,
                 LogicalWidth = game.LogicalWidth,
-                LogicalHeight = game.LogicalHeight
+                LogicalHeight = game.LogicalHeight,
+                HomeKitColor = game.HomeKitColor,
+                AwayKitColor = game.AwayKitColor
             });
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)

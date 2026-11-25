@@ -13,8 +13,9 @@
     <ProjectReference Include="../RaylibPixelFootball.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="../config.json;../input.json;../menu.json" Link="%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../config.json;../input.json;../menu.json;../action_weights.json" Link="%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../Assets/Sprites/Players/*.png" Link="Assets/Sprites/Players/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../Assets/Sprites/Field/*.png" Link="Assets/Sprites/Field/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../Assets/Sprites/Ball/*.png" Link="Assets/Sprites/Ball/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

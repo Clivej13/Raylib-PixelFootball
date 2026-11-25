@@ -7,6 +7,7 @@
         { "Type": "Button", "Text": "Start", "Function": "StartGame" },
         { "Type": "Button", "Text": "Options", "Function": "OpenMenu", "Target": "Options" },
         { "Type": "Button", "Text": "Controls", "Function": "OpenMenu", "Target": "Controls" },
+        { "Type": "Button", "Text": "Teams", "Function": "OpenMenu", "Target": "Teams" },
         { "Type": "Button", "Text": "Exit", "Function": "ExitGame" }
       ]
     },
@@ -23,6 +24,15 @@
         { "Type": "Button", "Text": "Back", "Function": "Back" }
       ]
     },
+    "Teams": {
+      "Title": "TEAM SETUP",
+      "Items": [
+        { "Type": "Selector", "Text": "Home Kit", "Function": "SetHomeKitColor", "Options": ["Blue", "Red", "Green", "Gold", "White", "Black"], "Value": "Blue" },
+        { "Type": "Selector", "Text": "Away Kit", "Function": "SetAwayKitColor", "Options": ["Blue", "Red", "Green", "Gold", "White", "Black"], "Value": "Red" },
+        { "Type": "Label", "Text": "Kit colors are saved automatically." },
+        { "Type": "Button", "Text": "Back", "Function": "Back" }
+      ]
+    },
     "Controls": {
       "Title": "CONTROLS",
       "Items": [
@@ -35,6 +45,10 @@
         { "Type": "KeyBind", "Text": "Catch & Run", "Function": "Rebind", "Action": "CatchRac" },
         { "Type": "KeyBind", "Text": "Catch High", "Function": "Rebind", "Action": "CatchHigh" },
         { "Type": "KeyBind", "Text": "Catch Dive", "Function": "Rebind", "Action": "CatchDive" },
+        { "Type": "KeyBind", "Text": "Kick", "Function": "Rebind", "Action": "Kick" },
+        { "Type": "KeyBind", "Text": "Bull Rush", "Function": "Rebind", "Action": "BullRush" },
+        { "Type": "KeyBind", "Text": "Engage", "Function": "Rebind", "Action": "Engage" },
+        { "Type": "KeyBind", "Text": "Block Loss", "Function": "Rebind", "Action": "BlockLoss" },
         { "Type": "KeyBind", "Text": "Pause", "Function": "Rebind", "Action": "Pause" },
         { "Type": "Label", "Text": "F3 toggles debug. Rebinding lasts for this session." },
         { "Type": "Button", "Text": "Back", "Function": "Back" }
@@ -46,6 +60,7 @@
         { "Type": "Button", "Text": "Resume", "Function": "Resume" },
         { "Type": "Button", "Text": "Options", "Function": "OpenMenu", "Target": "Options" },
         { "Type": "Button", "Text": "Controls", "Function": "OpenMenu", "Target": "Controls" },
+        { "Type": "Button", "Text": "Teams", "Function": "OpenMenu", "Target": "Teams" },
         { "Type": "Button", "Text": "Main Menu", "Function": "MainMenu" },
         { "Type": "Button", "Text": "Exit", "Function": "ExitGame" }
       ]
